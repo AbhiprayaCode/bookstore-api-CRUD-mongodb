@@ -1,0 +1,22 @@
+[
+  { "id": 1, "title": "Atomic Habits", "category": "self-help", "description": "A guide to building good habits and breaking bad ones by James Clear.", "rating": 4.8 },
+  { "id": 2, "title": "The Hobbit", "category": "fantasy", "description": "A fantasy novel by J.R.R. Tolkien about the adventure of Bilbo Baggins.", "rating": 4.7 },
+  { "id": 3, "title": "Clean Code", "category": "programming", "description": "A handbook of agile software craftsmanship by Robert C. Martin.", "rating": 4.6 },
+  { "id": 4, "title": "The Pragmatic Programmer", "category": "programming", "description": "Tips and best practices for software developers by Andrew Hunt and David Thomas.", "rating": 4.5 },
+  { "id": 5, "title": "Harry Potter and the Sorcerer's Stone", "category": "fantasy", "description": "The first book in the Harry Potter series by J.K. Rowling.", "rating": 4.9 },
+  { "id": 6, "title": "The Power of Habit", "category": "self-help", "description": "Explores the science behind habit creation and change by Charles Duhigg.", "rating": 4.4 },
+  { "id": 7, "title": "The Lord of the Rings", "category": "fantasy", "description": "An epic high-fantasy novel by J.R.R. Tolkien.", "rating": 4.9 },
+  { "id": 8, "title": "Deep Work", "category": "self-help", "description": "Rules for focused success in a distracted world by Cal Newport.", "rating": 4.3 },
+  { "id": 9, "title": "Eloquent JavaScript", "category": "programming", "description": "A modern introduction to programming using JavaScript by Marijn Haverbeke.", "rating": 4.2 },
+  { "id": 10, "title": "The Alchemist", "category": "fiction", "description": "A novel by Paulo Coelho about a boy’s journey to realize his destiny.", "rating": 4.1 },
+  { "id": 11, "title": "To Kill a Mockingbird", "category": "fiction", "description": "A novel by Harper Lee about racial injustice in the Deep South.", "rating": 4.8 },
+  { "id": 12, "title": "The Subtle Art of Not Giving a F*ck", "category": "self-help", "description": "A counterintuitive approach to living a good life by Mark Manson.", "rating": 4.0 },
+  { "id": 13, "title": "The Great Gatsby", "category": "fiction", "description": "A novel by F. Scott Fitzgerald set in the Jazz Age.", "rating": 4.2 },
+  { "id": 14, "title": "You Don't Know JS", "category": "programming", "description": "A book series diving deep into the core mechanisms of the JavaScript language.", "rating": 4.5 },
+  { "id": 15, "title": "The Psychology of Money", "category": "self-help", "description": "Timeless lessons on wealth, greed, and happiness by Morgan Housel.", "rating": 4.7 },
+  { "id": 16, "title": "A Game of Thrones", "category": "fantasy", "description": "The first book in the epic fantasy series A Song of Ice and Fire by George R.R. Martin.", "rating": 4.6 },
+  { "id": 17, "title": "Refactoring", "category": "programming", "description": "Improving the design of existing code by Martin Fowler.", "rating": 4.4 },
+  { "id": 18, "title": "The Catcher in the Rye", "category": "fiction", "description": "A novel by J.D. Salinger about teenage rebellion and angst.", "rating": 4.0 },
+  { "id": 19, "title": "Mindset", "category": "self-help", "description": "The new psychology of success by Carol S. Dweck.", "rating": 4.3 },
+  { "id": 20, "title": "The Name of the Wind", "category": "fantasy", "description": "A fantasy novel by Patrick Rothfuss about the adventures of Kvothe.", "rating": 4.7 }
+]
