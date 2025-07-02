@@ -1,28 +1,28 @@
 import { Router } from "express";
 import commentsRouter from "./comment.js";
+import categoryRouter from "./category.js";
 import Book from '../models/books.model.js'
 
 const router = Router();
 
 // READ
 router.get('/', async (req, res) => {
-    const {keyword} = req.query
-    
+    const { keyword } = req.query;
     if (!keyword) {
-        res.json(await Book.find())
+        return res.json(await Book.find());
     }
-    const result = await Book.find(
-        {
 
-            $or: [
-                {title: {$regex: `.*${keyword}.*`}},
-                {category: {$regex: `.*${keyword}.*`}},
-                {description: {$regex: `.*${keyword}.*`}}
-            ]
-        }
-    );
+    const result = await Book.find({
+        $or: [
+            { title: { $regex: keyword, $options: 'i' } },
+            { category: { $regex: keyword, $options: 'i' } }
+
+            // Turn this comment off if you want to search by description
+            // { description: { $regex: keyword, $options: 'i' } }
+        ]
+    });
     res.json(result);
-})
+});
 
 // POST
 router.post('/', async (req, res)=> {

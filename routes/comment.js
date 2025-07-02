@@ -4,7 +4,9 @@ import Comment from "../models/comments.model.js";
 const router = Router({mergeParams: true});
 
 router.get('/', async (req, res) => {
-    const result = await Comment.find()
+    const result = await Comment.find({
+        bookId: req.params.id
+    })
     res.json(result)
 });
 
