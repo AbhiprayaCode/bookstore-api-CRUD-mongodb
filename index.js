@@ -1,18 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import booksRouter from './routes/books.js';
-const Bookstore = booksRouter;
+import mongoose from "mongoose";
+import app from "./app.js";
 
-const app = express();
-app.use(express.json());
-app.use(cors());
-
-app.get('/', (req, res) => {
-    res.send('Welcome to Bookstore API');
-});
-
-app.use('/books', Bookstore);
-
-app.listen(8080, () => {
-    console.log('Server is running on port 8080');
-});
+mongoose.connect('mongodb://localhost:27017/bookstore-api-mongodb')
+    .then(() => {
+        console.log('Database is connected!')
+        app.listen(8080, () => {
+            console.log('Server is running on port 8080')
+        })
+    })
+    .catch(error => {
+        console.log(error)
+    })

@@ -1,82 +1,80 @@
 import { Router } from "express";
 import commentsRouter from "./comment.js";
-import fs from 'fs';
+import Book from '../models/books.model.js'
 
 const router = Router();
 
-const dummyBooks = fs.readFileSync('books.json', 'utf-8');
-let books = JSON.parse(dummyBooks);
-
-router.get('/', (req, res) => {
-    const {search} = req.query;
-    let result = books
-
-    if (search) {
-        const lowerSearch = search.toLowerCase()
-        result = books.filter(
-            book => book.title.toLowerCase().includes(lowerSearch) || book.category.toLowerCase().includes(lowerSearch)
-        )
+// READ
+router.get('/', async (req, res) => {
+    const {keyword} = req.query
+    
+    if (!keyword) {
+        res.json(await Book.find())
     }
+    const result = await Book.find(
+        {
 
-    res.json(result)     
-});
+            $or: [
+                {title: {$regex: `.*${keyword}.*`}},
+                {category: {$regex: `.*${keyword}.*`}},
+                {description: {$regex: `.*${keyword}.*`}}
+            ]
+        }
+    );
+    res.json(result);
+})
 
 // POST
-router.post('/', (req, res)=> {
+router.post('/', async (req, res)=> {
     const {title, category, description} = req.body;
-    const id = books[books.length - 1].id + 1;
-    const newBook = {
-        id,
+
+    const createBook = await Book.create({
         title,
         category,
-        description,
-        rating : 0
-    }
-    books.push(newBook);
-    res.status(201).json(newBook);
+        description
+    })
+    
+    res.status(201).json(createBook);
 })
 
 // UPDATE
-router.put('/:bookId', (req, res)=> {
+router.put('/:bookId', async (req, res)=> {
     const bookId = req.params.bookId;
     const {title, category, description} = req.body;
-    const idx = books.findIndex((item)=> item.id==bookId);
-    const book = books[idx];
 
-    book.title = title;
-    book.category = category;
-    book.description = description;
+    const updatedBook = await Book.findByIdAndUpdate(bookId, {
+        title,
+        category,
+        description
+    }, {
+        returnDocument: 'after'
+    })
 
-    res.json(book);
+    res.json(updatedBook);
 })
 
 // DEELETE
-router.delete("/:bookId", (req, res)=> {
-    const bookId = Number(req.params.bookId);
-    books = books.filter((item, idx)=> {
-        return item.id !== bookId;
-    })
-    res.status(204).json(books);
+router.delete("/:bookId", async (req, res)=> {
+    const bookId = req.params.bookId;
+    const deletedBook = await Book.findByIdAndDelete(bookId);
+    res.status(204).json(deletedBook);
 })
 
-router.get('/:id', (req, res) => {
-    const bookId = parseInt(req.params.id);
-    const book = books.filter((item, index) => {
-        return item.id == bookId
-    })
+// Find by ID
+router.get('/:id', async (req, res) => {
+    const bookId = req.params.id;
+    const book = await Book.findById(bookId);
     res.json(book);
 })
 
-router.get('/category/:category', (req, res) => {
+// Find by Category
+router.get('/category/:category', async (req, res) => {
     const bookCategory = req.params.category;
-    const book = books.filter((item, index) => {
-        return item.category == bookCategory
-    });
+    const book = await Book.find({category: bookCategory});
     res.json(book);
 })
 
+// Comments
 router.use('/:id/comments', commentsRouter)
-
-
 
 export default router

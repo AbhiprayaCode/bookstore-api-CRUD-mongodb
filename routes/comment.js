@@ -1,18 +1,29 @@
 import { Router } from "express";
-import fs from 'fs';
+import Comment from "../models/comments.model.js";
 
 const router = Router({mergeParams: true});
 
-const comments = JSON.parse(fs.readFileSync('comments.json', 'utf-8'));
-
-
-
-router.get('/', (req, res) => {
-    const result = comments.filter((item, index) => {
-        return item.bookId == parseInt(req.params.id)
-    })
-
+router.get('/', async (req, res) => {
+    const result = await Comment.find()
     res.json(result)
+});
+
+router.post('/', async (req, res) => {
+    try {
+        const { name, message } = req.body;
+        const bookId = req.params.id;
+        if (!bookId || !name || !message) {
+            return res.status(400).json({ error: 'bookId (from URL), name, and message are required.' });
+        }
+        const createComment = await Comment.create({
+            bookId,
+            name,
+            message
+        });
+        res.status(201).json(createComment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 export default router
