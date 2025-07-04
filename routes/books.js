@@ -1,27 +1,66 @@
 import { Router } from "express";
 import commentsRouter from "./comment.js";
-import categoryRouter from "./category.js";
+import categoryRouter from "./category.js"; 
 import Book from '../models/books.model.js'
 
 const router = Router();
 
 // READ
 router.get('/', async (req, res) => {
-    const { keyword } = req.query;
+
+    // Pagination (New)
+    const keyword = req.query.keyword;
+    const page = Number(req.query.page);
+    const pageSize = Number(req.query.pageSize);
+    const skip = (page - 1) * pageSize;
+
     if (!keyword) {
-        return res.json(await Book.find());
+        const total = await Book.countDocuments({});
+        const findBooks = await Book.find().skip(skip).limit(pageSize);
+        return res.json({
+            books: findBooks,
+            total,
+            page,
+            pageSize
+        });
     }
 
-    const result = await Book.find({
+    // Search function
+    if (req.query.search) {
+        const searchKeyword = req.query.search;
+        const result = await Book.find({
+            $or: [
+                { title: { $regex: searchKeyword, $options: 'i' } },
+                { category: { $regex: searchKeyword, $options: 'i' } },
+                { description: { $regex: searchKeyword, $options: 'i' } }
+            ]
+        });
+        return res.json(result);
+    }
+
+    // Default: paginated search by keyword
+    const total = await Book.countDocuments({
         $or: [
             { title: { $regex: keyword, $options: 'i' } },
-            { category: { $regex: keyword, $options: 'i' } }
-
-            // Turn this comment off if you want to search by description
-            // { description: { $regex: keyword, $options: 'i' } }
+            { category: { $regex: keyword, $options: 'i' } },
+            { description: { $regex: keyword, $options: 'i' } }
         ]
     });
-    res.json(result);
+
+    const findBooks = await Book.find({
+        $or: [
+            { title: { $regex: keyword, $options: 'i' } },
+            { category: { $regex: keyword, $options: 'i' } },
+            { description: { $regex: keyword, $options: 'i' } }
+        ]
+    }).skip(skip).limit(pageSize);
+
+    res.json({
+        books: findBooks,
+        total,
+        page,
+        pageSize
+    });
 });
 
 // POST
